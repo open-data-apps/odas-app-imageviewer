@@ -1,0 +1,117 @@
+/* Bildgalerie Styling */
+.image-gallery img {
+  width: 100%;
+  max-height: 80vh;
+  object-fit: cover;
+  margin-bottom: 20px;
+  border-radius: 8px;
+  transition: transform 0.3s ease;
+}
+
+.image-gallery img:hover {
+  transform: scale(1.015);
+}
+
+/* Modal Bild Styling */
+.modal-body img {
+  max-width: 100%;
+  max-height: 80vh;
+  object-fit: contain;
+  display: block;
+  margin: 0 auto;
+}
+
+.modal-content {
+  margin-bottom: 3%;
+  margin-left: 3%;
+  margin-right: 3%;
+}
+
+.modal-footer {
+  background-color: #f8f9fa;
+  border-top: 2px solid #dee2e6;
+}
+
+#modalImage {
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+  display: block;
+  margin: 0 auto;
+}
+
+/* startpage.css */
+
+/* Container der Startseite zentriert den Inhalt */
+#app-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
+/* Hauptblock der Startseite (Titel, Beschreibung, Button) */
+.start-page-content {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+/* Container für die Galerie-Vorschau */
+.gallery-preview {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 15px;
+  width: 100%;
+  max-width: 1100px;
+}
+
+/* Styling der Vorschaubilder */
+.gallery-preview img {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.gallery-preview img:hover {
+  transform: scale(1.05);
+}
+
+/* Slideshow Ansicht Styling */
+.slideshow-container {
+  margin: 20px auto;
+  padding: 20px;
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.image-container {
+  text-align: center;
+}
+
+.info-container {
+  padding: 10px;
+  border-top: 1px solid #dee2e6;
+}
+
+.slide-title {
+  font-size: 1.8rem;
+  margin-bottom: 10px;
+  font-weight: bold;
+  color: #343a40;
+}
+
+.slide-description {
+  font-size: 1rem;
+  color: #6c757d;
+  line-height: 1.5;
+}
+
+.button-container button {
+  min-width: 120px;
+  margin: 0 5px;
+  font-size: 1rem;
+}
