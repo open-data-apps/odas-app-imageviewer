@@ -9,16 +9,19 @@
   "kurzbeschreibung": "Diese App verwandelt Open Data Bilddaten in eine Galerie. Nutzer:innen können bequem durch Bilder blättern. Ob historische Fotos, Karten oder Stadtansichten.",
   "beschreibung": [
     "_multiline_",
-    "Die Bildergalerie zeigt Bilder an. Die Daten werden aus",
-    "einem Open",
-    "Data Portal bezogen und müssen in Form von JPG,PNG,GIF oder webp-Dateien",
-    "vorliegen.",
-    "Die Daten müssen in einem Open Data Portal",
-    "wie folgt aufgebaut sein: \n",
-    "* Datensatz: mit allen Bildern als Ressourcen",
-    "* Ressourcen: Jede Galerie ist als Datensatz anzulegen.",
-    "* Als URL muss ein Link zum Datensatz angegeben werden. Beispiel:",
-    "https://open-data-musterstadt.ckan.de/api/3/action/package_show?id=bilder_esslingen"
+    "<p>Die Bildergalerie-App macht offene Bilddaten als Galerie nutzbar.</p>",
+    "<p>Sie eignet sich für Fotos, Karten, historische Ansichten oder andere Bildsammlungen, die in einem Open-Data-Datensatz bereitgestellt werden.</p>",
+    "<h3>Inhalte</h3>",
+    "<p>Die App lädt Bildressourcen und zugehörige Metadaten aus einer konfigurierten Quelle. Nutzer:innen können durch Bilder blättern und Detailinformationen betrachten.</p>",
+    "<h3>Nutzung</h3>",
+    "<p>Öffnen Sie die Galerie, wählen Sie einzelne Bilder aus und nutzen Sie die Detailansicht für weitere Angaben. Die dargestellten Rechte- und Quellenhinweise hängen von der Datenquelle ab.</p>",
+    "<h3>Für wen ist diese App?</h3>",
+    "<p>Die App richtet sich an Bürger:innen, Archive, Kulturstellen, Tourismus und Verwaltungen, die Bildsammlungen verständlich präsentieren möchten. Besondere Datenkenntnisse sind für die Nutzung nicht erforderlich.</p>",
+    "<h3>Datenquelle</h3>",
+    "<p>Die Bilddaten werden aus dem konfigurierten Datensatz geladen.</p>",
+    "<ul><li><strong>Open Data Portal:</strong> <a href=\"{{odp.url}}\" target=\"_blank\" rel=\"noopener\">{{odp.name}}</a></li><li><strong>Ressource/API-Endpunkt:</strong> <a href=\"{{appconfig.datensatz-apiurl}}\" target=\"_blank\" rel=\"noopener\">Konfigurierter Bilddaten-Endpunkt</a></li></ul>",
+    "<h3>Open Data App Store</h3>",
+    "<p>Diese App ist für den Open Data App Store vorbereitet und kann mit kommunalen oder regionalen Bilddaten betrieben werden.</p>"
   ],
   "tags-funktion": [
     "Tourismus",
@@ -104,19 +107,19 @@
       },
       "default": [
         "_multiline_",
-        "Die Bildergalerie-App zeigt die Galerie für den ausgewählten Datensatz an.",
-        "Die Daten werden tagesaktuell gehalten. Bei Änderungen versuchen wir, den Datenbestend immer sofort zu aktualisieren.",
-        "## Für wen ist diese App?",
-        "Diese Bildergalerie präsentiert kuratierte Bildsammlungen. Sie richtet sich an Bürger:innen, Tourist:innen und Forscher:innen mit Interesse an visueller Dokumentation.",
-        "## App-Anbieter",
-        "Die App wird bereit gestellt von <a href=\"{{odp.anbieter.url}}\">{{odp.anbieter.name}}</a>",
-        "## Datenquelle",
-        "Die Daten kommen aus  unserem Open Data Portal <a href=\"{{odp.url}}\">{{odp.name}}</a>",
-        "Die Datenquelle ist in unserem Open Data Portal <a href=\"{{appinstanz.apiurl}}\">{{appinstanz.apiurl}}</a>.",
-        "## Über diese App",
-        "Die App wurde entwickelt von <a href=\"{{app.developer.url}}\">{{app.developer.name}}</a>. App-Version: {{app.version}}.",
-        "## Open Data App Store",
-        "Der Open Data App Store betrieben von <a href=\"{{odas.betreiber.url}}\">{{odas.betreiber.name}}</a>"
+        "<p>Die Bildergalerie-App macht offene Bilddaten als Galerie nutzbar.</p>",
+        "<p>Sie eignet sich für Fotos, Karten, historische Ansichten oder andere Bildsammlungen, die in einem Open-Data-Datensatz bereitgestellt werden.</p>",
+        "<h3>Inhalte</h3>",
+        "<p>Die App lädt Bildressourcen und zugehörige Metadaten aus einer konfigurierten Quelle. Nutzer:innen können durch Bilder blättern und Detailinformationen betrachten.</p>",
+        "<h3>Nutzung</h3>",
+        "<p>Öffnen Sie die Galerie, wählen Sie einzelne Bilder aus und nutzen Sie die Detailansicht für weitere Angaben. Die dargestellten Rechte- und Quellenhinweise hängen von der Datenquelle ab.</p>",
+        "<h3>Für wen ist diese App?</h3>",
+        "<p>Die App richtet sich an Bürger:innen, Archive, Kulturstellen, Tourismus und Verwaltungen, die Bildsammlungen verständlich präsentieren möchten. Besondere Datenkenntnisse sind für die Nutzung nicht erforderlich.</p>",
+        "<h3>Datenquelle</h3>",
+        "<p>Die Bilddaten werden aus dem konfigurierten Datensatz geladen.</p>",
+        "<ul><li><strong>Open Data Portal:</strong> <a href=\"{{odp.url}}\" target=\"_blank\" rel=\"noopener\">{{odp.name}}</a></li><li><strong>Ressource/API-Endpunkt:</strong> <a href=\"{{appconfig.datensatz-apiurl}}\" target=\"_blank\" rel=\"noopener\">Konfigurierter Bilddaten-Endpunkt</a></li></ul>",
+        "<h3>Open Data App Store</h3>",
+        "<p>Diese App ist für den Open Data App Store vorbereitet und kann mit kommunalen oder regionalen Bilddaten betrieben werden.</p>"
       ],
       "erforderlich": "ja"
     },
@@ -209,22 +212,29 @@
     "datenquelleHinweis": {
       "label": "Methodik / Datenquelle-Hinweis",
       "hilfe": "Herkunft, Erhebungsmethode, Limitierungen (Markdown/HTML). Leer = ausgeblendet.",
-      "format": { "typ": "markdown" },
-      "default": "",
+      "format": {
+        "typ": "markdown"
+      },
+      "default": "<p>Die Bildergalerie lädt Bildressourcen und Metadaten aus dem konfigurierten Datensatz. Darstellung, Sortierung und Detailinformationen hängen von den Feldern ab, die in der Quelle bereitgestellt werden; Rechte- und Lizenzangaben sollten immer mit der Originalquelle abgeglichen werden.</p>",
       "erforderlich": "nein"
     },
     "datenStand": {
       "label": "Datenstand",
       "hilfe": "Freitext-Datum, z.B. 'Stand: Januar 2025'. Leer = ausgeblendet.",
-      "format": { "typ": "string", "laenge": 60 },
-      "default": "",
+      "format": {
+        "typ": "string",
+        "laenge": 60
+      },
+      "default": "Stand: abhängig vom konfigurierten Bilddatensatz",
       "erforderlich": "nein"
     },
     "weiterfuehrendeLinks": {
       "label": "Weiterführende Links",
       "hilfe": "Verwandte Datensätze / Hintergrundquellen (Markdown/HTML). Leer = ausgeblendet.",
-      "format": { "typ": "markdown" },
-      "default": "",
+      "format": {
+        "typ": "markdown"
+      },
+      "default": "<ul><li><a href=\"{{odp.url}}\" target=\"_blank\" rel=\"noopener\">{{odp.name}}</a></li><li><a href=\"{{appconfig.datensatz-apiurl}}\" target=\"_blank\" rel=\"noopener\">Konfigurierter Bilddaten-Endpunkt</a></li><li><a href=\"https://open-data-app-store.de\" target=\"_blank\" rel=\"noopener\">Open Data App Store</a></li></ul>",
       "erforderlich": "nein"
     }
   },
