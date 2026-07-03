@@ -3,7 +3,7 @@
   "app-entwickler-name": "mueller-gmbh",
   "name-in-url": "bildergalerie",
   "name": "Bildergalerie",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "odas-app-icon": "assets/odas-app-icon.svg",
   "app-icon": "app/app-icon.png",
   "kurzbeschreibung": "Diese App verwandelt Open Data Bilddaten in eine Galerie. Nutzer:innen können bequem durch Bilder blättern. Ob historische Fotos, Karten oder Stadtansichten.",
@@ -106,6 +106,8 @@
         "_multiline_",
         "Die Bildergalerie-App zeigt die Galerie für den ausgewählten Datensatz an.",
         "Die Daten werden tagesaktuell gehalten. Bei Änderungen versuchen wir, den Datenbestend immer sofort zu aktualisieren.",
+        "## Für wen ist diese App?",
+        "Diese Bildergalerie präsentiert kuratierte Bildsammlungen. Sie richtet sich an Bürger:innen, Tourist:innen und Forscher:innen mit Interesse an visueller Dokumentation.",
         "## App-Anbieter",
         "Die App wird bereit gestellt von <a href=\"{{odp.anbieter.url}}\">{{odp.anbieter.name}}</a>",
         "## Datenquelle",
@@ -161,16 +163,6 @@
       ],
       "erforderlich": "ja"
     },
-    "urldaten": {
-      "label": "URL zum Datensatz im ODP",
-      "hilfe": "Der Datensatz im Open Data Portal mit den JPG-Einzeldateien der Galerie.",
-      "format": {
-        "typ": "url"
-      },
-      "default": "{{appconfig.datensatz-url}}",
-      "beispiel": "https://open-data-musterstadt.ckan.de/dataset/bilder_esslingen",
-      "erforderlich": "ja"
-    },
     "fusszeile": {
       "label": "Fußzeile",
       "hilfe": "Wird auf der Website unten in der Fusszeile angezeigt.",
@@ -213,6 +205,27 @@
       "default": "",
       "beispiel": "",
       "erforderlich": "ja"
+    },
+    "datenquelleHinweis": {
+      "label": "Methodik / Datenquelle-Hinweis",
+      "hilfe": "Herkunft, Erhebungsmethode, Limitierungen (Markdown/HTML). Leer = ausgeblendet.",
+      "format": { "typ": "markdown" },
+      "default": "",
+      "erforderlich": "nein"
+    },
+    "datenStand": {
+      "label": "Datenstand",
+      "hilfe": "Freitext-Datum, z.B. 'Stand: Januar 2025'. Leer = ausgeblendet.",
+      "format": { "typ": "string", "laenge": 60 },
+      "default": "",
+      "erforderlich": "nein"
+    },
+    "weiterfuehrendeLinks": {
+      "label": "Weiterführende Links",
+      "hilfe": "Verwandte Datensätze / Hintergrundquellen (Markdown/HTML). Leer = ausgeblendet.",
+      "format": { "typ": "markdown" },
+      "default": "",
+      "erforderlich": "nein"
     }
   },
   "daten": {

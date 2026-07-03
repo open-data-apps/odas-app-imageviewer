@@ -8,11 +8,18 @@ Die App ist eine "ODAP App V1".
 
 ## Funktionen
 
-- Anzeige von einer Bilder Sammlung
+- Anzeige einer Bildersammlung als Galerie
+- Slideshow mit Navigation (vor/zurück) und Bildinformationen
+- Vorschaugitter auf der Startseite
+- Datenfrische-Indikator (CKAN metadata_modified)
+
+## Für wen ist diese App?
+
+Diese Bildergalerie präsentiert kuratierte Bildsammlungen. Sie richtet sich an Bürger:innen, Tourist:innen und Forscher:innen mit Interesse an visueller Dokumentation.
 
 ## Entwicklung
 
-- Bootstrap 5.3
+Das Frontend setzt auf Vanilla JS und Bootstrap 5.3.
 
 ### Aufbau der App
 
@@ -23,6 +30,10 @@ Die App ist eine "ODAP App V1".
 #### Mobile Version
 
 ![Alt-Text](/assets/Mobile_Screenshot.png)
+
+### Lokale Entwicklung mit VS Code Live Server
+
+Die App kann mit VS Code Live Server aus der Projektwurzel gestartet werden. Öffne dann `http://127.0.0.1:<live-server-port>/app/`; Live Server nutzt standardmäßig Port `5500`.
 
 ### Start der App
 

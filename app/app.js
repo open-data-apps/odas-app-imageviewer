@@ -13,10 +13,21 @@
  * @param {HTMLElement} enclosingHtmlDivElement - HTML Knoten, in den der App-Inhalt eingefügt wird
  * @returns {string | NULL} - darzustellendes HTML oder NULL, wenn direkt im DOM manipuliert wird
  */
+function escapeHtml(str) {
+  const div = document.createElement("div");
+  div.appendChild(document.createTextNode(str));
+  return div.innerHTML;
+}
+
 function app(configData, enclosingHtmlDivElement) {
   // Da der Hauptinhalt bereits existiert, wird dieser Knoten genutzt.
   // Füge einen internen Container für die App-Inhalte ein.
-  enclosingHtmlDivElement.innerHTML = `<div id="app-container"></div>`;
+  enclosingHtmlDivElement.innerHTML = `<div id="iv-datenfrische"></div><div id="app-container"></div><div id="iv-schale4"></div>`;
+
+  var ivSchale4 = document.getElementById("iv-schale4");
+  if (ivSchale4) {
+    ivSchale4.innerHTML = methodikBox(configData) + renderWeitereInfos(configData);
+  }
 
   // Starte das Laden der Galerie-Daten
   fetchGalleryData(configData.apiurl); // apiurl wird komplett klein geschrieben
@@ -60,6 +71,8 @@ async function fetchGalleryData(apiurl) {
         "<p>Fehler beim Parsen der Galerie-Daten.</p>";
       return;
     }
+    ivDatenfrische = extractDatenStandIv(data);
+    updateIvFrische(ivDatenfrische);
     // Annahme: Die API liefert ein Objekt in data.result mit folgenden Feldern:
     // - notes: Beschreibung der Galerie
     // - title: (optional) Titel der Galerie
@@ -178,6 +191,64 @@ function startSlideshow(imageData, galleryInfo) {
 
   // Initiale Anzeige
   updateSlide();
+}
+
+var ivDatenfrische = null;
+
+function methodikBox(configdata) {
+  var hinweis = String(configdata.datenquelleHinweis || "").trim();
+  var stand = String(configdata.datenStand || "").trim();
+  if (!hinweis && !stand) return "";
+  var standZeile = stand
+    ? '<p class="text-muted small mb-2">' + escapeHtml(stand) + "</p>"
+    : "";
+  return (
+    '<section class="iv-methodik mt-4">' +
+    '<button class="iv-methodik-toggle collapsed" type="button" ' +
+    'data-bs-toggle="collapse" data-bs-target="#iv-methodik-body" ' +
+    'aria-expanded="false" aria-controls="iv-methodik-body">' +
+    '<h2 class="h5 mb-0">Methodik &amp; Datenquelle</h2>' +
+    '<span class="iv-methodik-chevron" aria-hidden="true">&#9662;</span>' +
+    "</button>" +
+    '<div id="iv-methodik-body" class="collapse">' +
+    '<div class="iv-methodik-content">' +
+    standZeile +
+    hinweis +
+    "</div></div></section>"
+  );
+}
+
+function renderWeitereInfos(configdata) {
+  var links = (configdata.weiterfuehrendeLinks || "").trim();
+  if (!links) return "";
+  return (
+    '<section class="iv-weitere-infos mt-4">' +
+    '<h2 class="h5 mb-3">Weitere Informationen</h2>' +
+    '<div class="iv-weitere-infos-content">' +
+    links +
+    "</div></section>"
+  );
+}
+
+function extractDatenStandIv(apiResponse) {
+  var raw =
+    apiResponse?.result?.metadata_modified ||
+    apiResponse?.result?.last_modified ||
+    null;
+  if (!raw) return null;
+  var d = new Date(raw);
+  return isNaN(d.getTime()) ? null : d.toLocaleDateString("de-DE");
+}
+
+function updateIvFrische(stand) {
+  var el = document.getElementById("iv-datenfrische");
+  if (el) {
+    el.innerHTML = stand
+      ? '<div class="text-muted small text-end mb-2">Aktualisiert: ' +
+        escapeHtml(stand) +
+        "</div>"
+      : "";
+  }
 }
 
 /*
