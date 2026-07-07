@@ -29,8 +29,8 @@
     "Bildbetrachter"
   ],
   "tags-dateityp": [
-    "jpg",
-    "png"
+    "JPG",
+    "PNG"
   ],
   "tags-datenart": [
     "Bilder"
@@ -40,7 +40,6 @@
     "docs/Mobile_Screenshot.png"
   ],
   "branding-css": "",
-  "apiversion": "1",
   "instanz-config": {
     "seitentitel": {
       "label": "Seitentitel",
