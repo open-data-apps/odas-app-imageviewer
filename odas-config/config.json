@@ -1,5 +1,6 @@
 {
   "apiVersion": "1",
+  "proxyAktiv": "nein",
   "titel": "ODAS App Bildergalerie",
   "seitentitel": "ODAS App Imageviewer",
   "icon": "logo_ondics.png",
