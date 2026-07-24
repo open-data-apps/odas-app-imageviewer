@@ -3,7 +3,7 @@
   "app-entwickler-name": "mueller-gmbh",
   "name-in-url": "bildergalerie",
   "name": "Bildergalerie",
-  "version": "1.2.0",
+  "version": "1.3.0",
   "odas-app-icon": "assets/odas-app-icon.svg",
   "app-icon": "app/app-icon.png",
   "kurzbeschreibung": "Diese App verwandelt Open Data Bilddaten in eine Galerie. Nutzer:innen können bequem durch Bilder blättern. Ob historische Fotos, Karten oder Stadtansichten.",
