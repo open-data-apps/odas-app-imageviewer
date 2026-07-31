@@ -5,7 +5,7 @@
   "seitentitel": "ODAS App Imageviewer",
   "icon": "logo_ondics.png",
   "brandingCSS": "",
-  "brandingCSSFile": "",
+  "brandingCSSFile": "../assets/branding.css",
   "beschreibung": [
     "<p>Die Bildergalerie-App macht offene Bilddaten als Galerie nutzbar.</p>",
     "<p>Sie eignet sich für Fotos, Karten, historische Ansichten oder andere Bildsammlungen, die in einem Open-Data-Datensatz bereitgestellt werden.</p>",
