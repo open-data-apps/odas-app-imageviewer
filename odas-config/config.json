@@ -26,7 +26,7 @@
   "datenschutz": "",
   "urlODP": "<a href='https://offenedaten.esslingen.de' target='_blank'>https://offenedaten.esslingen.de</a>",
   "urlDaten": "<a href='https://offenedaten.esslingen.de/Ondics_GmbH' target='_blank'>https://offenedaten.esslingen.de/Ondics_GmbH</a>",
-  "fusszeile": "(C) Copyright 2024 | Inhalt: Stadt Esslingen | App: Mueller GmbH | Provided by: Ondics GmbH",
+  "fusszeile": "(C) Copyright 2024 | Inhalt: Stadt Esslingen | App: Ondics GmbH | Provided by: Ondics GmbH",
   "apiurl": "https://open-data-musterstadt.ckan.de/api/3/action/package_show?id=bilder_esslingen",
   "sprache": "de",
   "datenquelleHinweis": "<p>Die Bildergalerie lädt Bildressourcen und Metadaten aus dem konfigurierten Datensatz. Darstellung, Sortierung und Detailinformationen hängen von den Feldern ab, die in der Quelle bereitgestellt werden; Rechte- und Lizenzangaben sollten immer mit der Originalquelle abgeglichen werden.</p>",

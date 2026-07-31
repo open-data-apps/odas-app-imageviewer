@@ -13,10 +13,24 @@
  * @param {HTMLElement} enclosingHtmlDivElement - HTML Knoten, in den der App-Inhalt eingefügt wird
  * @returns {string | NULL} - darzustellendes HTML oder NULL, wenn direkt im DOM manipuliert wird
  */
-function escapeHtml(str) {
-  const div = document.createElement("div");
-  div.appendChild(document.createTextNode(str));
-  return div.innerHTML;
+function escapeHtml(value = "") {
+  return String(value)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
+
+// Laesst nur http- und https-URLs durch. Bildadressen stammen aus dem
+// CKAN-Datensatz und sind damit fremdbestimmt.
+function safeUrl(value = "") {
+  try {
+    const url = new URL(String(value), window.location.href);
+    return url.protocol === "http:" || url.protocol === "https:" ? url.href : "";
+  } catch {
+    return "";
+  }
 }
 
 function app(configData, enclosingHtmlDivElement) {
@@ -167,14 +181,17 @@ function showStartPage(galleryInfo, imageData) {
   const container = document.getElementById("app-container");
   container.innerHTML = `
     <div class="text-center">
-      <h1>${galleryInfo.title}</h1>
-      <p>${galleryInfo.notes}</p>
+      <h1>${escapeHtml(galleryInfo.title)}</h1>
+      <p>${escapeHtml(galleryInfo.notes)}</p>
       <button id="start-slideshow" class="btn btn-primary">Slideshow starten</button>
     </div>
     <div class="gallery-preview mt-4">
       ${imageData
         .slice(0, 6)
-        .map((image) => `<img src="${image.url}" alt="${image.title}">`)
+        .map(
+          (image) =>
+            `<img src="${escapeHtml(safeUrl(image.url))}" alt="${escapeHtml(image.title)}">`,
+        )
         .join("")}
     </div>
   `;
@@ -217,7 +234,7 @@ function startSlideshow(imageData, galleryInfo) {
   // Funktion zum Aktualisieren der Anzeige
   function updateSlide() {
     const currentImage = imageData[currentIndex];
-    document.getElementById("slide-image").src = currentImage.url;
+    document.getElementById("slide-image").src = safeUrl(currentImage.url);
     document.getElementById("slide-title").textContent = currentImage.title;
     document.getElementById("slide-description").textContent =
       currentImage.description;

@@ -1,11 +1,11 @@
 {
   "app-entwickler-id": "12343",
-  "app-entwickler-name": "mueller-gmbh",
+  "app-entwickler-name": "ondics-gmbh",
   "name-in-url": "bildergalerie",
   "name": "Bildergalerie",
-  "version": "1.4.0",
+  "version": "1.5.0",
   "odas-app-icon": "assets/odas-app-icon.svg",
-  "app-icon": "app/app-icon.png",
+  "app-icon": "assets/odas-app-icon.svg",
   "kurzbeschreibung": "Diese App verwandelt Open Data Bilddaten in eine Galerie. Nutzer:innen können bequem durch Bilder blättern. Ob historische Fotos, Karten oder Stadtansichten.",
   "beschreibung": [
     "_multiline_",
@@ -36,8 +36,8 @@
     "Bilder"
   ],
   "screenshots": [
-    "docs/Desktop_Screenshot.png",
-    "docs/Mobile_Screenshot.png"
+    "assets/Desktop_Screenshot.png",
+    "assets/Mobile_Screenshot.png"
   ],
   "branding-css": "",
   "instanz-config": {
@@ -45,16 +45,6 @@
       "label": "Seitentitel",
       "hilfe": "Der Seitentitel wird im Browser-Tab der App angezeigt",
       "default": "ODAS App Imageviewer",
-      "format": {
-        "typ": "string",
-        "laenge": 50
-      },
-      "erforderlich": "ja"
-    },
-    "lizenz": {
-      "label": "Lizenz",
-      "hilfe": "Angabe der Lizenz, die für die Nutzung der App gilt.",
-      "default": "Open Software License (OSL)",
       "format": {
         "typ": "string",
         "laenge": 50
@@ -157,7 +147,7 @@
       "label": "Fußzeile",
       "hilfe": "Wird auf der Website unten in der Fusszeile angezeigt.",
       "format": {
-        "typ": "String",
+        "typ": "string",
         "laenge": 50
       },
       "default": "(C) Copyright {{jahr}} | App & Daten: {{odp.anbieter.name}} | App-Entwickler: {{app.developer.name}} | ODAS: {{odas.betreiber.name}}",
@@ -190,12 +180,12 @@
     "sprache": {
       "label": "Sprache der App",
       "hilfe": "Angabe der App-Sprache",
+      "default": "de",
       "format": {
         "typ": "dropdown",
         "optionen": [
           "de"
-        ],
-        "default": "de"
+        ]
       },
       "erforderlich": "ja"
     },
@@ -236,11 +226,31 @@
       },
       "default": "<ul><li><a href=\"{{odp.url}}\" target=\"_blank\" rel=\"noopener\">{{odp.name}}</a></li><li><a href=\"{{appconfig.datensatz-apiurl}}\" target=\"_blank\" rel=\"noopener\">Konfigurierter Bilddaten-Endpunkt</a></li><li><a href=\"https://open-data-app-store.de\" target=\"_blank\" rel=\"noopener\">Open Data App Store</a></li></ul>",
       "erforderlich": "nein"
+    },
+    "brandingCSS": {
+      "label": "Zusätzliches Branding-CSS",
+      "hilfe": "Optionaler CSS-Code für die konkrete App-Instanz.",
+      "default": "",
+      "format": {
+        "typ": "string",
+        "laenge": 10000
+      },
+      "erforderlich": "nein"
+    },
+    "brandingCSSFile": {
+      "label": "Branding-CSS-Datei",
+      "hilfe": "Optionale URL zu einer zusätzlichen CSS-Datei für die konkrete App-Instanz.",
+      "default": "",
+      "format": {
+        "typ": "url",
+        "laenge": 500
+      },
+      "erforderlich": "nein"
     }
   },
   "daten": {
     "beschreibung": "Die Bildergalerie-App verarbeitet konfigurierbare Open-Data-Ressourcen aus dem Open Data Portal (z.B. JSON- oder CSV-Endpunkte).",
-    "schema": "",
+    "schema": "assets/schema.json",
     "beispiel": "",
     "beispiel-url": ""
   },
