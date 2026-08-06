@@ -43,7 +43,7 @@
 /* startpage.css */
 
 /* Container der Startseite zentriert den Inhalt */
-#app-container {
+#iv-app-container {
   display: flex;
   flex-direction: column;
   justify-content: center;

@@ -36,15 +36,15 @@ function safeUrl(value = "") {
 function app(configData, enclosingHtmlDivElement) {
   // Da der Hauptinhalt bereits existiert, wird dieser Knoten genutzt.
   // Füge einen internen Container für die App-Inhalte ein.
-  enclosingHtmlDivElement.innerHTML = `<div id="iv-datenfrische"></div><div id="app-container"></div><div id="iv-schale4"></div>`;
+  enclosingHtmlDivElement.innerHTML = `<div id="iv-datenfrische"></div><div id="iv-app-container"></div><div id="iv-schale4"></div>`;
 
-  var ivSchale4 = document.getElementById("iv-schale4");
+  var ivSchale4 = enclosingHtmlDivElement.querySelector("#iv-schale4");
   if (ivSchale4) {
     ivSchale4.innerHTML = methodikBox(configData) + renderWeitereInfos(configData);
   }
 
   // Starte das Laden der Galerie-Daten
-  fetchGalleryData(configData.apiurl, configData); // apiurl wird komplett klein geschrieben
+  fetchGalleryData(configData.apiurl, configData, enclosingHtmlDivElement); // apiurl wird komplett klein geschrieben
 }
 
 /**
@@ -134,11 +134,11 @@ async function fetchOdasJson(targetUrl, configdata = {}) {
  * Lädt die Galerie-Daten aus der API (über Proxy) und startet die Darstellung.
  * @param {string} apiurl - URL zur API
  */
-async function fetchGalleryData(apiurl, configdata = {}) {
+async function fetchGalleryData(apiurl, configdata = {}, root) {
   try {
     const data = await fetchOdasJson(apiurl, configdata);
     ivDatenfrische = extractDatenStandIv(data);
-    updateIvFrische(ivDatenfrische);
+    updateIvFrische(ivDatenfrische, root);
     // Annahme: Die API liefert ein Objekt in data.result mit folgenden Feldern:
     // - notes: Beschreibung der Galerie
     // - title: (optional) Titel der Galerie
@@ -158,16 +158,16 @@ async function fetchGalleryData(apiurl, configdata = {}) {
       }));
 
     if (imageData.length === 0) {
-      document.getElementById("app-container").innerHTML =
+      root.querySelector("#iv-app-container").innerHTML =
         "<p>Keine Bilder gefunden. Bitte versuche es später erneut.</p>";
       return;
     }
 
     // Zeige die Startseite mit Galerieübersicht
-    showStartPage(galleryInfo, imageData);
+    showStartPage(galleryInfo, imageData, root);
   } catch (err) {
     console.error("Fehler beim Laden der Galerie-Daten:", err);
-    document.getElementById("app-container").innerHTML =
+    root.querySelector("#iv-app-container").innerHTML =
       "<p>Fehler beim Laden der Galerie-Daten. Bitte versuche es später erneut.</p>";
   }
 }
@@ -177,13 +177,13 @@ async function fetchGalleryData(apiurl, configdata = {}) {
  * @param {Object} galleryInfo - Enthält title und notes der Galerie
  * @param {Array} imageData - Array mit Bildobjekten (url, title, description)
  */
-function showStartPage(galleryInfo, imageData) {
-  const container = document.getElementById("app-container");
+function showStartPage(galleryInfo, imageData, root) {
+  const container = root.querySelector("#iv-app-container");
   container.innerHTML = `
     <div class="text-center">
       <h1>${escapeHtml(galleryInfo.title)}</h1>
       <p>${escapeHtml(galleryInfo.notes)}</p>
-      <button id="start-slideshow" class="btn btn-primary">Slideshow starten</button>
+      <button id="iv-start-slideshow" class="btn btn-primary">Slideshow starten</button>
     </div>
     <div class="gallery-preview mt-4">
       ${imageData
@@ -196,10 +196,10 @@ function showStartPage(galleryInfo, imageData) {
     </div>
   `;
 
-  document
-    .getElementById("start-slideshow")
+  root
+    .querySelector("#iv-start-slideshow")
     .addEventListener("click", function () {
-      startSlideshow(imageData, galleryInfo);
+      startSlideshow(imageData, galleryInfo, root);
     });
 }
 
@@ -209,22 +209,22 @@ function showStartPage(galleryInfo, imageData) {
  * @param {Array} imageData - Array mit Bildobjekten (url, title, description)
  * @param {Object} galleryInfo - Enthält title und notes der Galerie (zur Rückkehr zur Startseite)
  */
-function startSlideshow(imageData, galleryInfo) {
-  const container = document.getElementById("app-container");
+function startSlideshow(imageData, galleryInfo, root) {
+  const container = root.querySelector("#iv-app-container");
   // Neue HTML-Struktur für die Slideshow mit eigener Anordnung der Buttons und Info-Bereich
   container.innerHTML = `
     <div id="slideshow" class="slideshow-container text-center">
       <div class="image-container mb-3">
-        <img id="slide-image" src="" alt="Bild" class="img-fluid" style="max-height: 70vh;">
+        <img id="iv-slide-image" src="" alt="Bild" class="img-fluid" style="max-height: 70vh;">
       </div>
       <div class="info-container mb-3">
-        <h3 id="slide-title" class="slide-title"></h3>
-        <p id="slide-description" class="slide-description"></p>
+        <h3 id="iv-slide-title" class="slide-title"></h3>
+        <p id="iv-slide-description" class="slide-description"></p>
       </div>
       <div class="button-container d-flex justify-content-around">
-        <button id="prev-slide" class="btn btn-secondary">Vorherige</button>
-        <button id="back-to-home" class="btn btn-secondary">Zurück zur Startseite</button>
-        <button id="next-slide" class="btn btn-secondary">Nächste</button>
+        <button id="iv-prev-slide" class="btn btn-secondary">Vorherige</button>
+        <button id="iv-back-to-home" class="btn btn-secondary">Zurück zur Startseite</button>
+        <button id="iv-next-slide" class="btn btn-secondary">Nächste</button>
       </div>
     </div>
   `;
@@ -234,28 +234,28 @@ function startSlideshow(imageData, galleryInfo) {
   // Funktion zum Aktualisieren der Anzeige
   function updateSlide() {
     const currentImage = imageData[currentIndex];
-    document.getElementById("slide-image").src = safeUrl(currentImage.url);
-    document.getElementById("slide-title").textContent = currentImage.title;
-    document.getElementById("slide-description").textContent =
+    root.querySelector("#iv-slide-image").src = safeUrl(currentImage.url);
+    root.querySelector("#iv-slide-title").textContent = currentImage.title;
+    root.querySelector("#iv-slide-description").textContent =
       currentImage.description;
   }
 
   // Eventlistener für Navigationsbuttons
-  document.getElementById("prev-slide").addEventListener("click", function () {
+  root.querySelector("#iv-prev-slide").addEventListener("click", function () {
     currentIndex = (currentIndex - 1 + imageData.length) % imageData.length;
     updateSlide();
   });
 
-  document.getElementById("next-slide").addEventListener("click", function () {
+  root.querySelector("#iv-next-slide").addEventListener("click", function () {
     currentIndex = (currentIndex + 1) % imageData.length;
     updateSlide();
   });
 
   // Eventlistener für den Zurück-Button
-  document
-    .getElementById("back-to-home")
+  root
+    .querySelector("#iv-back-to-home")
     .addEventListener("click", function () {
-      showStartPage(galleryInfo, imageData);
+      showStartPage(galleryInfo, imageData, root);
     });
 
   // Initiale Anzeige
@@ -309,8 +309,8 @@ function extractDatenStandIv(apiResponse) {
   return isNaN(d.getTime()) ? null : d.toLocaleDateString("de-DE");
 }
 
-function updateIvFrische(stand) {
-  var el = document.getElementById("iv-datenfrische");
+function updateIvFrische(stand, root) {
+  var el = root.querySelector("#iv-datenfrische");
   if (el) {
     el.innerHTML = stand
       ? '<div class="text-muted small text-end mb-2">Aktualisiert: ' +

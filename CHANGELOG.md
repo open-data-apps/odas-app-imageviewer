@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.12.0 - 2026-08-06
+- CHG: DOM-Zugriffe auf den App-Container gescopt (F-25): alle Elemente der App werden über den App-Container (root.querySelector) angesprochen statt über document; unpräfixierte IDs mit `iv-`-Präfix versehen (`app-container` → `iv-app-container`, `start-slideshow` → `iv-start-slideshow`, `slide-image` → `iv-slide-image`, `slide-title` → `iv-slide-title`, `slide-description` → `iv-slide-description`, `prev-slide` → `iv-prev-slide`, `next-slide` → `iv-next-slide`, `back-to-home` → `iv-back-to-home`)
+
 ## 1.11.0 - 2026-08-06
 - FIX: Datenschutzangabe beschreibt den tatsaechlichen Stand nach dem Vendoring (Welle G)
 
