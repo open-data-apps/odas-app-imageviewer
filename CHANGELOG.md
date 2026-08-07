@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.13.0 - 2026-08-07
+- FIX: Bootstrap-Ziele instanzeindeutig machen (F-32): `data-bs-target`, `aria-controls` und die div-ID der Methodik-Box (`iv-methodik-body`) werden pro App-Instanz mit einer UID (`iv-methodik-body-i1`, `i2`, …) versehen, damit mehrere Instanzen der App auf einer Seite nicht kollidieren
+
 ## 1.12.0 - 2026-08-06
 - CHG: DOM-Zugriffe auf den App-Container gescopt (F-25): alle Elemente der App werden über den App-Container (root.querySelector) angesprochen statt über document; unpräfixierte IDs mit `iv-`-Präfix versehen (`app-container` → `iv-app-container`, `start-slideshow` → `iv-start-slideshow`, `slide-image` → `iv-slide-image`, `slide-title` → `iv-slide-title`, `slide-description` → `iv-slide-description`, `prev-slide` → `iv-prev-slide`, `next-slide` → `iv-next-slide`, `back-to-home` → `iv-back-to-home`)
 

@@ -13,6 +13,10 @@
  * @param {HTMLElement} enclosingHtmlDivElement - HTML Knoten, in den der App-Inhalt eingefügt wird
  * @returns {string | NULL} - darzustellendes HTML oder NULL, wenn direkt im DOM manipuliert wird
  */
+
+let ivInstanzZaehler = 0;
+let ivUid = "i1";
+
 function escapeHtml(value = "") {
   return String(value)
     .replace(/&/g, "&amp;")
@@ -34,6 +38,7 @@ function safeUrl(value = "") {
 }
 
 function app(configData, enclosingHtmlDivElement) {
+  ivUid = "i" + ++ivInstanzZaehler;
   // Da der Hauptinhalt bereits existiert, wird dieser Knoten genutzt.
   // Füge einen internen Container für die App-Inhalte ein.
   enclosingHtmlDivElement.innerHTML = `<div id="iv-datenfrische"></div><div id="iv-app-container"></div><div id="iv-schale4"></div>`;
@@ -274,12 +279,12 @@ function methodikBox(configdata) {
   return (
     '<section class="iv-methodik mt-4">' +
     '<button class="iv-methodik-toggle collapsed" type="button" ' +
-    'data-bs-toggle="collapse" data-bs-target="#iv-methodik-body" ' +
-    'aria-expanded="false" aria-controls="iv-methodik-body">' +
+    'data-bs-toggle="collapse" data-bs-target="#iv-methodik-body-' + ivUid + '" ' +
+    'aria-expanded="false" aria-controls="iv-methodik-body-' + ivUid + '">' +
     '<h2 class="h5 mb-0">Methodik &amp; Datenquelle</h2>' +
     '<span class="iv-methodik-chevron" aria-hidden="true">&#9662;</span>' +
     "</button>" +
-    '<div id="iv-methodik-body" class="collapse">' +
+    '<div id="iv-methodik-body-' + ivUid + '" class="collapse">' +
     '<div class="iv-methodik-content">' +
     standZeile +
     hinweis +
