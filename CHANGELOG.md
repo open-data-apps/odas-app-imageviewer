@@ -1,5 +1,9 @@
 # Changelog
 
+
+## 1.14.0 - 2026-08-12
+- FIX: `app/index.html` auf den Template-Stand (F-47): Datei byte-gleich aus `oda-generic` übernommen — gültiges HTML, deutsche ARIA-Labels, Footer im Body; Titel und Fußzeile bleiben Platzhalter und werden zur Laufzeit aus der Instanz-Config überschrieben
+
 ## 1.13.0 - 2026-08-07
 - FIX: Bootstrap-Ziele instanzeindeutig machen (F-32): `data-bs-target`, `aria-controls` und die div-ID der Methodik-Box (`iv-methodik-body`) werden pro App-Instanz mit einer UID (`iv-methodik-body-i1`, `i2`, …) versehen, damit mehrere Instanzen der App auf einer Seite nicht kollidieren
 
