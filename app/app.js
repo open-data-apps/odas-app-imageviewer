@@ -49,6 +49,12 @@ function app(configData, enclosingHtmlDivElement) {
   }
 
   // Starte das Laden der Galerie-Daten
+  const quelle = String(configData.apiurl || "").trim();
+  if (!quelle || /^\{\{.*\}\}$/.test(quelle) || /^<.*>$/.test(quelle)) {
+    enclosingHtmlDivElement.querySelector("#iv-app-container").innerHTML =
+      '<div class="alert alert-info" role="alert">Es ist keine Datenquelle konfiguriert.</div>';
+    return;
+  }
   fetchGalleryData(configData.apiurl, configData, enclosingHtmlDivElement); // apiurl wird komplett klein geschrieben
 }
 
