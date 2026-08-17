@@ -15,7 +15,6 @@
  */
 
 let ivInstanzZaehler = 0;
-let ivUid = "i1";
 
 function escapeHtml(value = "") {
   return String(value)
@@ -38,14 +37,14 @@ function safeUrl(value = "") {
 }
 
 function app(configData, enclosingHtmlDivElement) {
-  ivUid = "i" + ++ivInstanzZaehler;
+  const ivUid = "i" + ++ivInstanzZaehler;
   // Da der Hauptinhalt bereits existiert, wird dieser Knoten genutzt.
   // Füge einen internen Container für die App-Inhalte ein.
   enclosingHtmlDivElement.innerHTML = `<div id="iv-datenfrische"></div><div id="iv-app-container"></div><div id="iv-schale4"></div>`;
 
   var ivSchale4 = enclosingHtmlDivElement.querySelector("#iv-schale4");
   if (ivSchale4) {
-    ivSchale4.innerHTML = methodikBox(configData) + renderWeitereInfos(configData);
+    ivSchale4.innerHTML = methodikBox(configData, ivUid) + renderWeitereInfos(configData);
   }
 
   // Starte das Laden der Galerie-Daten
@@ -148,8 +147,8 @@ async function fetchOdasJson(targetUrl, configdata = {}) {
 async function fetchGalleryData(apiurl, configdata = {}, root) {
   try {
     const data = await fetchOdasJson(apiurl, configdata);
-    ivDatenfrische = extractDatenStandIv(data);
-    updateIvFrische(ivDatenfrische, root);
+    const datenfrische = extractDatenStandIv(data);
+    updateIvFrische(datenfrische, root);
     // Annahme: Die API liefert ein Objekt in data.result mit folgenden Feldern:
     // - notes: Beschreibung der Galerie
     // - title: (optional) Titel der Galerie
@@ -273,9 +272,7 @@ function startSlideshow(imageData, galleryInfo, root) {
   updateSlide();
 }
 
-var ivDatenfrische = null;
-
-function methodikBox(configdata) {
+function methodikBox(configdata, uid) {
   var hinweis = String(configdata.datenquelleHinweis || "").trim();
   var stand = String(configdata.datenStand || "").trim();
   if (!hinweis && !stand) return "";
@@ -285,12 +282,12 @@ function methodikBox(configdata) {
   return (
     '<section class="iv-methodik mt-4">' +
     '<button class="iv-methodik-toggle collapsed" type="button" ' +
-    'data-bs-toggle="collapse" data-bs-target="#iv-methodik-body-' + ivUid + '" ' +
-    'aria-expanded="false" aria-controls="iv-methodik-body-' + ivUid + '">' +
+    'data-bs-toggle="collapse" data-bs-target="#iv-methodik-body-' + uid + '" ' +
+    'aria-expanded="false" aria-controls="iv-methodik-body-' + uid + '">' +
     '<h2 class="h5 mb-0">Methodik &amp; Datenquelle</h2>' +
     '<span class="iv-methodik-chevron" aria-hidden="true">&#9662;</span>' +
     "</button>" +
-    '<div id="iv-methodik-body-' + ivUid + '" class="collapse">' +
+    '<div id="iv-methodik-body-' + uid + '" class="collapse">' +
     '<div class="iv-methodik-content">' +
     standZeile +
     hinweis +
