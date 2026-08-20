@@ -6,32 +6,33 @@
   "brandingCSS": "",
   "brandingCSSFile": "../assets/branding.css",
   "beschreibung": [
-    "<p>Die Bildergalerie-App macht offene Bilddaten als Galerie nutzbar.</p>",
-    "<p>Sie eignet sich für Fotos, Karten, historische Ansichten oder andere Bildsammlungen, die in einem Open-Data-Datensatz bereitgestellt werden.</p>",
-    "<h3>Inhalte</h3>",
-    "<p>Die App lädt Bildressourcen und zugehörige Metadaten aus einer konfigurierten Quelle. Nutzer:innen können durch Bilder blättern und Detailinformationen betrachten.</p>",
-    "<h3>Nutzung</h3>",
-    "<p>Öffnen Sie die Galerie, wählen Sie einzelne Bilder aus und nutzen Sie die Detailansicht für weitere Angaben. Die dargestellten Rechte- und Quellenhinweise hängen von der Datenquelle ab.</p>",
-    "<h3>Für wen ist diese App?</h3>",
-    "<p>Die App richtet sich an Bürger:innen, Archive, Kulturstellen, Tourismus und Verwaltungen, die Bildsammlungen verständlich präsentieren möchten. Besondere Datenkenntnisse sind für die Nutzung nicht erforderlich.</p>",
-    "<h3>Datenquelle</h3>",
-    "<p>Die Bilddaten werden aus dem konfigurierten Datensatz geladen.</p>",
-    "<ul><li><strong>Open Data Portal:</strong> <a href=\"{{odp.url}}\" target=\"_blank\" rel=\"noopener\">{{odp.name}}</a></li><li><strong>Ressource/API-Endpunkt:</strong> <a href=\"{{appconfig.datensatz-apiurl}}\" target=\"_blank\" rel=\"noopener\">Konfigurierter Bilddaten-Endpunkt</a></li></ul>",
-    "<h3>Open Data App Store</h3>",
-    "<p>Diese App ist für den Open Data App Store vorbereitet und kann mit kommunalen oder regionalen Bilddaten betrieben werden.</p>"
+    "<p>Die Bildergalerie-App macht offene Bilddaten als Galerie nutzbar und zeigt Bildressourcen eines konfigurierten Open-Data-Datensatzes.</p>",
+    "<p>Sie eignet sich für Fotos, Karten, historische Ansichten oder andere Bildsammlungen und richtet sich an Bürger:innen, Archive, Kulturstellen, Tourismus und Verwaltungen – besondere Datenkenntnisse sind für die Nutzung nicht erforderlich.</p>",
+    "<h2>Methodik</h2>",
+    "<p>Die App ruft den in <code>apiurl</code> konfigurierten CKAN-Endpunkt <code>package_show</code> ab – im Live-Betrieb optional über den ODAS-Proxy (<code>proxyAktiv</code>), sonst direkt – und wertet im Browser die Antwort aus (<code>result</code> mit Metadaten und <code>resources</code>).</p>",
+    "<p>Ressourcen werden gefiltert, indem nur URLs mit Bild-Endung <code>jpg</code>, <code>jpeg</code>, <code>png</code>, <code>gif</code> oder <code>webp</code> berücksichtigt werden; jede Treffer-Ressource wird auf <code>url</code>, <code>title</code> (aus <code>name</code>) und <code>description</code> abgebildet. Die Reihenfolge der Quelle bleibt erhalten; es erfolgt keine zusätzliche Sortierung.</p>",
+    "<p>Auf der Startseite zeigt die App eine Vorschau der ersten sechs Bilder, in der Slideshow kann mit „Vorherige“ und „Nächste“ zwischen den gefilterten Bildern navigiert werden (Umlauf am Ende). Nur Bild-URLs mit <code>http</code> oder <code>https</code> werden über <code>safeUrl</code> geladen.</p>",
+    "<p>Der Datenstand leitet sich – sofern vorhanden – aus <code>metadata_modified</code> bzw. <code>last_modified</code> aus <code>result</code> ab. Welche Ressourcen, Titel, Beschreibungen und wie viele Bilder tatsächlich verfügbar sind sowie Verfügbarkeit, Lizenz und Aktualität hängen vom jeweiligen Datensatz ab.</p>",
+    "<h2>Datenquelle</h2>",
+    "<p>Die Bilddaten werden über die CKAN-API des Open-Data-Portals bereitgestellt; die konkrete Ressource wird über die App-Konfiguration festgelegt.</p>",
+    "<ul><li><strong>Open Data Portal:</strong> <a href=\"https://open-data-musterstadt.ckan.de\" target=\"_blank\">Open Data Musterstadt</a></li><li><strong>Datensatz:</strong> <a href=\"https://open-data-musterstadt.ckan.de/dataset/bilder_esslingen\" target=\"_blank\">Bilder Esslingen</a></li><li><strong>Ressource/API-Endpunkt:</strong> <a href=\"https://open-data-musterstadt.ckan.de/api/3/action/package_show?id=bilder_esslingen\" target=\"_blank\">CKAN package_show API</a></li></ul>",
+    "<p>Angezeigt werden die in der Quelle vorhandenen Bildressourcen; Verfügbarkeit, Lizenz und Aktualität hängen vom Pflegestand der Quelle ab.</p>",
+    "<h2>Open Data App</h2>",
+    "<p>Diese App ist eine Open Data App und kann im <a href=\"https://open-data-app-store.de/\" target=\"_blank\">Open Data App Store</a> betrieben werden. Sie ist Open Source und lässt sich mit Bilddaten konfigurieren.</p>",
+    "<ul><li><a href=\"https://open-data-app-store.de/\" target=\"_blank\">Open Data App Store</a> – die Plattform für Open Data Apps</li><li><a href=\"https://github.com/open-data-apps\" target=\"_blank\">Alle Open Data Apps auf GitHub</a> – die Organisation mit allen Apps</li><li><a href=\"https://github.com/open-data-apps/odas-app-imageviewer\" target=\"_blank\">odas-app-imageviewer</a> – das Repository dieser App</li></ul>"
   ],
   "kontakt": "Tel.: <a href='tel:+49711310093100'>0711-31009-3100</a><br>Fax: <a href='tel:+49711310093108'>0711-31009-3108</a><br>E-Mail: <a href='mailto:info@ondics.de'>info@ondics.de</a>",
   "impressum": "Ondics GmbH<br>Wolfgang Clauss<br>Blumenstrasse 19<br><a href='https://www.ondics.de/' target='_blank'>https://www.ondics.de/</a>",
   "datenschutz": [
     "<p>Diese App verarbeitet die angezeigten offenen Daten ausschließlich im Browser. Es werden keine Cookies gesetzt, keine Nutzungsstatistiken erhoben und keine Daten im Browser gespeichert.</p>",
     "<p>Alle für die Darstellung benötigten Programmbibliotheken werden mit der App ausgeliefert. Beim Aufruf werden dafür keine externen Server kontaktiert.</p>",
-    "<p>Die angezeigten Daten werden vom Browser direkt aus der konfigurierten Datenquelle geladen. Dabei werden technisch bedingt IP-Adresse und Browserkennung an deren Betreiber übermittelt. Maßgeblich ist der Schalter <code>proxyAktiv</code> der Instanz-Konfiguration.</p>"
+    "<p>Die angezeigten Daten werden vom Browser direkt aus der konfigurierten Datenquelle geladen. Dabei werden technisch bedingt IP-Adresse und Browserkennung an deren Betreiber übermittelt. Der Browser lädt dabei sowohl die Metadaten über CKAN <code>package_show</code> als auch die angezeigten Bilddateien von den in der Datenquelle hinterlegten Hosts. Maßgeblich ist der Schalter <code>proxyAktiv</code> der Instanz-Konfiguration.</p>"
   ],
   "urlDaten": "https://open-data-musterstadt.ckan.de/dataset/bilder_esslingen",
   "fusszeile": "(C) Copyright 2024 | Inhalt: Stadt Esslingen | App: Ondics GmbH | Provided by: Ondics GmbH",
   "apiurl": "https://open-data-musterstadt.ckan.de/api/3/action/package_show?id=bilder_esslingen",
   "sprache": "de",
-  "datenquelleHinweis": "<p>Die Bildergalerie lädt Bildressourcen und Metadaten aus dem konfigurierten Datensatz. Darstellung, Sortierung und Detailinformationen hängen von den Feldern ab, die in der Quelle bereitgestellt werden; Rechte- und Lizenzangaben sollten immer mit der Originalquelle abgeglichen werden.</p>",
+  "datenquelleHinweis": "<p>Die Bildergalerie lädt Bildressourcen und Metadaten aus dem konfigurierten Datensatz. Darstellung und Detailinformationen hängen von den in der Quelle bereitgestellten Feldern ab; Verfügbarkeit, Lizenz und Aktualität richten sich nach der Quelle und sollten mit der Originalquelle abgeglichen werden.</p>",
   "datenStand": "Stand: abhängig vom konfigurierten Bilddatensatz",
   "weiterfuehrendeLinks": "<ul><li><a href=\"{{odp.url}}\" target=\"_blank\" rel=\"noopener\">{{odp.name}}</a></li><li><a href=\"{{appconfig.datensatz-apiurl}}\" target=\"_blank\" rel=\"noopener\">Konfigurierter Bilddaten-Endpunkt</a></li><li><a href=\"https://open-data-app-store.de\" target=\"_blank\" rel=\"noopener\">Open Data App Store</a></li></ul>"
 }
