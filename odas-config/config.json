@@ -9,7 +9,7 @@
     "<p>Die Bildergalerie-App macht offene Bilddaten als Galerie nutzbar und zeigt Bildressourcen eines konfigurierten Open-Data-Datensatzes.</p>",
     "<p>Sie eignet sich für Fotos, Karten, historische Ansichten oder andere Bildsammlungen und richtet sich an Bürger:innen, Archive, Kulturstellen, Tourismus und Verwaltungen – besondere Datenkenntnisse sind für die Nutzung nicht erforderlich.</p>",
     "<h2>Methodik</h2>",
-    "<p>Die App ruft den in <code>apiurl</code> konfigurierten CKAN-Endpunkt <code>package_show</code> ab – im Live-Betrieb optional über den ODAS-Proxy (<code>proxyAktiv</code>), sonst direkt – und wertet im Browser die Antwort aus (<code>result</code> mit Metadaten und <code>resources</code>).</p>",
+    "<p>Die App ruft den in <code>apiurls.bilder</code> konfigurierten CKAN-Endpunkt <code>package_show</code> ab – im Live-Betrieb optional über den ODAS-Proxy (<code>proxyAktiv</code>), sonst direkt – und wertet im Browser die Antwort aus (<code>result</code> mit Metadaten und <code>resources</code>).</p>",
     "<p>Ressourcen werden gefiltert, indem nur URLs mit Bild-Endung <code>jpg</code>, <code>jpeg</code>, <code>png</code>, <code>gif</code> oder <code>webp</code> berücksichtigt werden; jede Treffer-Ressource wird auf <code>url</code>, <code>title</code> (aus <code>name</code>) und <code>description</code> abgebildet. Die Reihenfolge der Quelle bleibt erhalten; es erfolgt keine zusätzliche Sortierung.</p>",
     "<p>Auf der Startseite zeigt die App eine Vorschau der ersten sechs Bilder, in der Slideshow kann mit „Vorherige“ und „Nächste“ zwischen den gefilterten Bildern navigiert werden (Umlauf am Ende). Nur Bild-URLs mit <code>http</code> oder <code>https</code> werden über <code>safeUrl</code> geladen.</p>",
     "<p>Der Datenstand leitet sich – sofern vorhanden – aus <code>metadata_modified</code> bzw. <code>last_modified</code> aus <code>result</code> ab. Welche Ressourcen, Titel, Beschreibungen und wie viele Bilder tatsächlich verfügbar sind sowie Verfügbarkeit, Lizenz und Aktualität hängen vom jeweiligen Datensatz ab.</p>",
@@ -30,7 +30,13 @@
   ],
   "urlDaten": "https://open-data-musterstadt.ckan.de/dataset/bilder_esslingen",
   "fusszeile": "(C) Copyright 2024 | Inhalt: Stadt Esslingen | App: Ondics GmbH | Provided by: Ondics GmbH",
-  "apiurl": "https://open-data-musterstadt.ckan.de/api/3/action/package_show?id=bilder_esslingen",
+  "apiurls": [
+    {
+      "name": "bilder",
+      "label": "URL zu den Daten",
+      "url": "https://open-data-musterstadt.ckan.de/api/3/action/package_show?id=bilder_esslingen"
+    }
+  ],
   "sprache": "de",
   "datenquelleHinweis": "<p>Die Bildergalerie lädt Bildressourcen und Metadaten aus dem konfigurierten Datensatz. Darstellung und Detailinformationen hängen von den in der Quelle bereitgestellten Feldern ab; Verfügbarkeit, Lizenz und Aktualität richten sich nach der Quelle und sollten mit der Originalquelle abgeglichen werden.</p>",
   "datenStand": "Stand: abhängig vom konfigurierten Bilddatensatz",

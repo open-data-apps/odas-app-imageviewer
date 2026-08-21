@@ -6,7 +6,9 @@
  *
  * ConfigData ist ein JSON enthält die Referenz auf die Daten im CKAN Open Data Portal:
  *     {
- *         "apiurl": "https://open-data-musterstadt.ckan.de/dataset/db92da8e40f9/download/formular_multitemplate.json"
+ *         "apiurls": [
+ *             { "name": "bilder", "label": "URL zu den Daten", "url": "https://open-data-musterstadt.ckan.de/dataset/db92da8e40f9/download/formular_multitemplate.json" }
+ *         ]
  *     }
  *
  * @param {Object} configData - Alle Konfigurationsdaten der App
@@ -48,13 +50,13 @@ function app(configData, enclosingHtmlDivElement) {
   }
 
   // Starte das Laden der Galerie-Daten
-  const quelle = String(configData.apiurl || "").trim();
+  const quelle = getOdasApiUrl(configData, "bilder");
   if (!quelle || /^\{\{.*\}\}$/.test(quelle) || /^<.*>$/.test(quelle)) {
     enclosingHtmlDivElement.querySelector("#iv-app-container").innerHTML =
       '<div class="alert alert-info" role="alert">Es ist keine Datenquelle konfiguriert.</div>';
     return;
   }
-  fetchGalleryData(configData.apiurl, configData, enclosingHtmlDivElement); // apiurl wird komplett klein geschrieben
+  fetchGalleryData(getOdasApiUrl(configData, "bilder"), configData, enclosingHtmlDivElement);
 }
 
 /**
@@ -134,6 +136,17 @@ async function fetchOdasResource(targetUrl, configdata = {}) {
       `Direkter Datenabruf fehlgeschlagen (${error.message}). Bitte prüfen Sie die Daten-URL und die CORS-Freigabe der Datenquelle.`,
     );
   }
+}
+
+/**
+ * Löst eine benannte Datenressource aus configdata.apiurls auf.
+ * Neue apiurls-Form (typ: "array"); das frühere skalare apiurl wird nicht mehr gelesen.
+ * @returns {string} getrimmte URL, oder "" für den Zustand "keine Quelle konfiguriert"
+ */
+function getOdasApiUrl(configdata, name) {
+  const liste = Array.isArray(configdata && configdata.apiurls) ? configdata.apiurls : [];
+  const treffer = liste.find((eintrag) => eintrag && eintrag.name === name);
+  return String((treffer && treffer.url) || "").trim();
 }
 
 async function fetchOdasJson(targetUrl, configdata = {}) {

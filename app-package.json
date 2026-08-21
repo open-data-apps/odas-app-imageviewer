@@ -3,7 +3,7 @@
   "app-entwickler-name": "ondics-gmbh",
   "name-in-url": "bildergalerie",
   "name": "Bildergalerie",
-  "version": "1.18.0",
+  "version": "1.19.0",
   "odas-app-icon": "assets/odas-app-icon.svg",
   "app-icon": "assets/odas-app-icon.svg",
   "kurzbeschreibung": "Diese App verwandelt Open Data Bilddaten in eine Galerie. Nutzer:innen können bequem durch Bilder blättern. Ob historische Fotos, Karten oder Stadtansichten.",
@@ -15,7 +15,7 @@
     "",
     "## Methodik",
     "",
-    "Die App ruft den in `apiurl` konfigurierten CKAN-Endpunkt `package_show` ab – im Live-Betrieb optional über den ODAS-Proxy (`proxyAktiv`), sonst direkt – und wertet im Browser die Antwort aus (`result` mit Metadaten und `resources`).",
+    "Die App ruft den in `apiurls.bilder` konfigurierten CKAN-Endpunkt `package_show` ab – im Live-Betrieb optional über den ODAS-Proxy (`proxyAktiv`), sonst direkt – und wertet im Browser die Antwort aus (`result` mit Metadaten und `resources`).",
     "",
     "Ressourcen werden gefiltert, indem nur URLs mit Bild-Endung `jpg`, `jpeg`, `png`, `gif` oder `webp` berücksichtigt werden; jede Treffer-Ressource wird auf `url`, `title` (aus `name`) und `description` abgebildet. Die Reihenfolge der Quelle bleibt erhalten; es erfolgt keine zusätzliche Sortierung.",
     "",
@@ -126,7 +126,7 @@
         "",
         "## Methodik",
         "",
-        "Die App ruft den in `apiurl` konfigurierten CKAN-Endpunkt `package_show` ab – im Live-Betrieb optional über den ODAS-Proxy (`proxyAktiv`), sonst direkt – und wertet im Browser die Antwort aus (`result` mit Metadaten und `resources`).",
+        "Die App ruft den in `apiurls.bilder` konfigurierten CKAN-Endpunkt `package_show` ab – im Live-Betrieb optional über den ODAS-Proxy (`proxyAktiv`), sonst direkt – und wertet im Browser die Antwort aus (`result` mit Metadaten und `resources`).",
         "",
         "Ressourcen werden gefiltert, indem nur URLs mit Bild-Endung `jpg`, `jpeg`, `png`, `gif` oder `webp` berücksichtigt werden; jede Treffer-Ressource wird auf `url`, `title` (aus `name`) und `description` abgebildet. Die Reihenfolge der Quelle bleibt erhalten; es erfolgt keine zusätzliche Sortierung.",
         "",
@@ -227,17 +227,24 @@
       },
       "erforderlich": "ja"
     },
-    "apiurl": {
-      "label": "URL zu den Daten",
+    "apiurls": {
+      "label": "URLs zu Datenressourcen",
       "category": "datenherkunft",
-      "hilfe": "Direkter, maschinenlesbarer Endpunkt, von dem die App die Ressourcen lädt — nicht die Datensatzseite im ODP (siehe „URL zum Datensatz im ODP\").",
+      "hilfe": "Direkter Download-, Datei- oder API-Endpunkt der tatsächlich verwendeten Datenquelle(n). Mehrere Einträge möglich.",
+      "typ": "array",
       "format": {
         "typ": "url",
-        "laenge": 255
+        "laenge": 500
       },
-      "default": "{{appconfig.datensatz-apiurl}}",
-      "beispiel": "https://open-data-musterstadt.ckan.de/api/3/action/package_show?id=bilder_esslingen",
-      "erforderlich": "ja"
+      "urls": [
+        {
+          "name": "bilder",
+          "label": "URL zu den Daten",
+          "default": "{{appconfig.datensatz-apiurl}}",
+          "beispiel": "https://open-data-musterstadt.ckan.de/api/3/action/package_show?id=bilder_esslingen",
+          "erforderlich": "ja"
+        }
+      ]
     },
     "sprache": {
       "label": "Sprache der App",
