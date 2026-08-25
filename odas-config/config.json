@@ -40,5 +40,5 @@
   "sprache": "de",
   "datenquelleHinweis": "<p>Die Bildergalerie lädt Bildressourcen und Metadaten aus dem konfigurierten Datensatz. Darstellung und Detailinformationen hängen von den in der Quelle bereitgestellten Feldern ab; Verfügbarkeit, Lizenz und Aktualität richten sich nach der Quelle und sollten mit der Originalquelle abgeglichen werden.</p>",
   "datenStand": "Stand: abhängig vom konfigurierten Bilddatensatz",
-  "weiterfuehrendeLinks": "<ul><li><a href=\"{{odp.url}}\" target=\"_blank\" rel=\"noopener\">{{odp.name}}</a></li><li><a href=\"{{appconfig.datensatz-apiurl}}\" target=\"_blank\" rel=\"noopener\">Konfigurierter Bilddaten-Endpunkt</a></li><li><a href=\"https://open-data-app-store.de\" target=\"_blank\" rel=\"noopener\">Open Data App Store</a></li></ul>"
+  "weiterfuehrendeLinks": "<ul><li><a href=\"{{odp.url}}\" target=\"_blank\" rel=\"noopener\">{{odp.name}}</a></li><li><a href=\"{{{appinstanz.apiurls.1}}}\" target=\"_blank\" rel=\"noopener\">Konfigurierter Bilddaten-Endpunkt</a></li><li><a href=\"https://open-data-app-store.de\" target=\"_blank\" rel=\"noopener\">Open Data App Store</a></li></ul>"
 }

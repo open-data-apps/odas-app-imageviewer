@@ -242,7 +242,7 @@
         {
           "name": "bilder",
           "label": "URL zu den Daten",
-          "default": "{{appconfig.datensatz-apiurl}}",
+          "default": "https://open-data-musterstadt.ckan.de/api/3/action/package_show?id=bilder_esslingen",
           "beispiel": "https://open-data-musterstadt.ckan.de/api/3/action/package_show?id=bilder_esslingen",
           "erforderlich": "ja"
         }
@@ -268,7 +268,7 @@
       "format": {
         "typ": "url"
       },
-      "default": "{{appconfig.datensatz-url}}",
+      "default": "https://open-data-musterstadt.ckan.de/dataset/bilder_esslingen",
       "beispiel": "https://open-data-musterstadt.ckan.de/dataset/bilder_esslingen",
       "erforderlich": "ja"
     },
@@ -300,7 +300,7 @@
       "format": {
         "typ": "markdown"
       },
-      "default": "- [{{odp.name}}]({{odp.url}})\n- [Konfigurierter Bilddaten-Endpunkt]({{appconfig.datensatz-apiurl}})\n- [Open Data App Store](https://open-data-app-store.de)",
+      "default": "- [{{odp.name}}]({{odp.url}})\n- [Konfigurierter Bilddaten-Endpunkt]({{{appinstanz.apiurls.1}}})\n- [Open Data App Store](https://open-data-app-store.de)",
       "erforderlich": "nein"
     },
     "brandingCSS": {
