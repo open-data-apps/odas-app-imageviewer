@@ -3,7 +3,7 @@
   "app-entwickler-name": "ondics-gmbh",
   "name-in-url": "bildergalerie",
   "name": "Bildergalerie",
-  "app-version": "1.23.0",
+  "app-version": "1.23.1",
   "app-package-version": "2",
   "odas-app-icon": "assets/odas-app-icon.svg",
   "app-icon": "assets/odas-app-icon.svg",
@@ -329,7 +329,7 @@
   "daten": {
     "beschreibung": "Die Bildergalerie-App verarbeitet konfigurierbare Open-Data-Ressourcen aus dem Open Data Portal (z.B. JSON- oder CSV-Endpunkte).",
     "schema": "assets/schema.json",
-    "beispiel": "",
-    "beispiel-url": ""
+    "beispiel": "CKAN-package_show-Antwort mit result.resources[] (Bildressourcen mit url, name, description) zur Galerieauswahl (JSON).",
+    "beispiel-url": "https://open-data-musterstadt.ckan.de/api/3/action/package_show?id=bilder_esslingen"
   }
 }

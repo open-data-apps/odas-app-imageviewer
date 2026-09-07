@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.23.1 - 2026-09-07
+- **FIX:** Frictionless-Härtung: `assets/schema.json` enthielt Code-Bezeichner statt Datenfelder — ersetzt durch Ressourcen-Metadaten (url/name/description/format, per Code-Lesung belegt); `daten.beispiel`/`beispiel-url` befüllt. package_show-Default bleibt (4B-Ausnahme, Rot-Beleg im REPORT).
+
 ## 1.23.0 - 2026-08-25
 - **CHG:** Datensatz-Link in der Beschreibung nutzt den neuen Shortcode `{{{appinstanz.urlDaten}}}` und zeigt damit auf den tatsächlich gebuchten Datensatz statt auf eine feste Beispiel-URL.
 

@@ -1,166 +1,43 @@
 {
   "$schema": "https://frictionlessdata.io/schemas/table-schema.json",
   "name": "odas-app-imageviewer",
-  "title": "Bildergalerie",
+  "title": "Imageviewer",
+  "description": "Ressourcen-Metadaten einer CKAN-package_show-Antwort (result.resources[]); die App filtert Einträge mit Bild-URL und zeigt url/name/description als Galerie.",
   "fields": [
     {
-      "name": "ckan",
-      "type": "string",
-      "description": "Wird in der App verwendet",
-      "constraints": {
-        "required": true
-      }
-    },
-    {
-      "name": "json",
-      "type": "string",
-      "description": "Wird in der App verwendet",
-      "constraints": {
-        "required": true
-      }
-    },
-    {
-      "name": "innerHTML",
-      "type": "string",
-      "description": "Wird in der App verwendet",
-      "constraints": {
-        "required": true
-      }
-    },
-    {
-      "name": "apiurl",
-      "type": "string",
-      "description": "Wird in der App verwendet",
-      "constraints": {
-        "required": true
-      }
-    },
-    {
-      "name": "pathname",
-      "type": "string",
-      "description": "Wird in der App verwendet",
-      "constraints": {
-        "required": true
-      }
-    },
-    {
-      "name": "search",
-      "type": "string",
-      "description": "Wird in der App verwendet",
-      "constraints": {
-        "required": true
-      }
-    },
-    {
-      "name": "location",
-      "type": "string",
-      "description": "Wird in der App verwendet",
-      "constraints": {
-        "required": true
-      }
-    },
-    {
-      "name": "replace",
-      "type": "string",
-      "description": "Wird in der App verwendet",
-      "constraints": {
-        "required": true
-      }
-    },
-    {
-      "name": "ok",
-      "type": "string",
-      "description": "Wird in der App verwendet",
-      "constraints": {
-        "required": true
-      }
-    },
-    {
-      "name": "parse",
-      "type": "string",
-      "description": "Wird in der App verwendet",
-      "constraints": {
-        "required": true
-      }
-    },
-    {
-      "name": "content",
-      "type": "string",
-      "description": "Wird in der App verwendet",
-      "constraints": {
-        "required": true
-      }
-    },
-    {
-      "name": "getElementById",
-      "type": "string",
-      "description": "Wird in der App verwendet",
-      "constraints": {
-        "required": true
-      }
-    },
-    {
-      "name": "result",
-      "type": "string",
-      "description": "Wird in der App verwendet",
-      "constraints": {
-        "required": true
-      }
-    },
-    {
-      "name": "test",
-      "type": "string",
-      "description": "Wird in der App verwendet",
-      "constraints": {
-        "required": true
-      }
-    },
-    {
       "name": "url",
+      "title": "Datei-URL",
       "type": "string",
-      "description": "Wird in der App verwendet",
+      "description": "Direkte URL der Bilddatei (Einträge ohne Bild-Endung werden ausgefiltert).",
       "constraints": {
-        "required": true
+        "required": false
       }
     },
     {
       "name": "name",
+      "title": "Name",
       "type": "string",
-      "description": "Wird in der App verwendet",
+      "description": "Name der Ressource, als Galerie-Titel verwendet.",
       "constraints": {
-        "required": true
+        "required": false
       }
     },
     {
       "name": "description",
+      "title": "Beschreibung",
       "type": "string",
-      "description": "Wird in der App verwendet",
+      "description": "Beschreibung der Ressource, als Bildunterschrift verwendet.",
       "constraints": {
-        "required": true
+        "required": false
       }
     },
     {
-      "name": "error",
+      "name": "format",
+      "title": "Format",
       "type": "string",
-      "description": "Wird in der App verwendet",
+      "description": "Dateiformat der Ressource, z. B. JPEG.",
       "constraints": {
-        "required": true
-      }
-    },
-    {
-      "name": "title",
-      "type": "string",
-      "description": "Wird in der App verwendet",
-      "constraints": {
-        "required": true
-      }
-    },
-    {
-      "name": "notes",
-      "type": "string",
-      "description": "Wird in der App verwendet",
-      "constraints": {
-        "required": true
+        "required": false
       }
     }
   ]
