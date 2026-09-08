@@ -52,8 +52,31 @@ function app(configData, enclosingHtmlDivElement) {
   // Starte das Laden der Galerie-Daten
   const quelle = getOdasApiUrl(configData, "bilder");
   if (!quelle || /^\{\{.*\}\}$/.test(quelle) || /^<.*>$/.test(quelle)) {
-    enclosingHtmlDivElement.querySelector("#iv-app-container").innerHTML =
-      '<div class="alert alert-info" role="alert">Es ist keine Datenquelle konfiguriert.</div>';
+    renderOdasFehler(
+      enclosingHtmlDivElement.querySelector("#iv-app-container"),
+      new Error("Keine Datenquelle konfiguriert."),
+      {
+        url: quelle,
+        label: "Bildergalerie-API",
+        typLabel: "Datensatz-API",
+        erwarteterTyp: "ckan-ps",
+      },
+    );
+    return;
+  }
+  // Variante A (F-92): Typprüfung vor dem ersten Fetch.
+  const ivTypWarn = validateUrlTypErwartung(quelle, "ckan-ps");
+  if (ivTypWarn) {
+    renderOdasFehler(
+      enclosingHtmlDivElement.querySelector("#iv-app-container"),
+      new Error(ivTypWarn),
+      {
+        url: quelle,
+        label: "Bildergalerie-API",
+        typLabel: "Datensatz-API",
+        erwarteterTyp: "ckan-ps",
+      },
+    );
     return;
   }
   fetchGalleryData(getOdasApiUrl(configData, "bilder"), configData, enclosingHtmlDivElement);
@@ -367,8 +390,12 @@ async function fetchGalleryData(apiurl, configdata = {}, root) {
     showStartPage(galleryInfo, imageData, root);
   } catch (err) {
     console.error("Fehler beim Laden der Galerie-Daten:", err);
-    root.querySelector("#iv-app-container").innerHTML =
-      "<p>Fehler beim Laden der Galerie-Daten. Bitte versuche es später erneut.</p>";
+    renderOdasFehler(root.querySelector("#iv-app-container"), err, {
+      url: apiurl,
+      label: "Bildergalerie-API",
+      typLabel: "Datensatz-API",
+      erwarteterTyp: "ckan-ps",
+    });
   }
 }
 
