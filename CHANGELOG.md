@@ -1,7 +1,9 @@
 # Changelog
 
-## 1.23.1 - 2026-09-07
+## 1.23.2 - 2026-09-08
 - **FIX:** Variante-A-Verdrahtung (F-92): Typprüfung (ckan-ps) vor dem ersten Fetch; Quellen- und Ladefehler über `renderOdasFehler` (1.23.1 -> 1.23.2).
+
+## 1.23.1 - 2026-09-07
 - **FIX:** Frictionless-Härtung: `assets/schema.json` enthielt Code-Bezeichner statt Datenfelder — ersetzt durch Ressourcen-Metadaten (url/name/description/format, per Code-Lesung belegt); `daten.beispiel`/`beispiel-url` befüllt. package_show-Default bleibt (4B-Ausnahme, Rot-Beleg im REPORT).
 
 ## 1.23.0 - 2026-08-25
