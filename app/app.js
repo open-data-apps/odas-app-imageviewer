@@ -18,6 +18,47 @@
 
 let ivInstanzZaehler = 0;
 
+// IV-B1: Instanz-Registry je Container. Die App hatte keinen Lifecycle-Schutz;
+// nach einem Seitenwechsel liefen spaete Antworten in einen TypeError, weil der
+// eigene Untercontainer nicht mehr existiert.
+const ivInstanzen = new Map();
+
+function onPageLeave() {
+  ivInstanzen.forEach(function (zustand) {
+    try {
+      zustand.abmelden();
+    } catch (error) {
+      console.warn("Fehler beim Abraeumen der Bildergalerie-Instanz:", error);
+    }
+  });
+  ivInstanzen.clear();
+}
+
+function ivZustand(root) {
+  return (root && ivInstanzen.get(root)) || null;
+}
+
+function ivVerworfen(root) {
+  const zustand = ivZustand(root);
+  return !zustand || zustand.disposed;
+}
+
+// IV-B2: Bilderkennung nicht nur an der Datei-Endung. CKAN-Ressourcen tragen
+// haeufig Query-Strings oder gar keine Endung; dort ist format/mimetype
+// massgeblich. Der akzeptierte Typumfang bleibt unveraendert.
+function istBildRessource(resource) {
+  const url = String((resource && resource.url) || "")
+    .split("?")[0]
+    .split("#")[0];
+  if (/\.(jpe?g|png|gif|webp)$/i.test(url)) return true;
+  const format = String(
+    (resource && (resource.format || resource.mimetype)) || "",
+  )
+    .toLowerCase()
+    .replace(/^image\//, "");
+  return /^(jpe?g|png|gif|webp)$/.test(format);
+}
+
 function escapeHtml(value = "") {
   return String(value)
     .replace(/&/g, "&amp;")
@@ -40,6 +81,31 @@ function safeUrl(value = "") {
 
 function app(configData, enclosingHtmlDivElement) {
   const ivUid = "i" + ++ivInstanzZaehler;
+
+  // IV-B1: Zustand und Teardown SOFORT registrieren — vor DOM- und Async-Arbeit.
+  const state = {
+    disposed: false,
+    controller: new AbortController(),
+    keydownHandler: null,
+    abmelden: function () {
+      this.disposed = true;
+      this.controller.abort();
+      // IV-B4: Tastatur-Listener der Slideshow gehoert der Instanz.
+      if (this.keydownHandler) {
+        document.removeEventListener("keydown", this.keydownHandler);
+        this.keydownHandler = null;
+      }
+    },
+  };
+  const ivVorheriger = ivInstanzen.get(enclosingHtmlDivElement);
+  if (ivVorheriger) {
+    try {
+      ivVorheriger.abmelden();
+    } catch (_e) {}
+  }
+  ivInstanzen.set(enclosingHtmlDivElement, state);
+  const rootIv = enclosingHtmlDivElement;
+
   // Da der Hauptinhalt bereits existiert, wird dieser Knoten genutzt.
   // Füge einen internen Container für die App-Inhalte ein.
   enclosingHtmlDivElement.innerHTML = `<div id="iv-datenfrische"></div><div id="iv-app-container"></div><div id="iv-schale4"></div>`;
@@ -79,7 +145,7 @@ function app(configData, enclosingHtmlDivElement) {
     );
     return;
   }
-  fetchGalleryData(getOdasApiUrl(configData, "bilder"), configData, enclosingHtmlDivElement);
+  fetchGalleryData(getOdasApiUrl(configData, "bilder"), configData, rootIv);
 }
 
 /**
@@ -154,18 +220,21 @@ async function fetchViaOdasProxy(targetUrl, options = {}) {
   return proxyData.content;
 }
 
-async function fetchOdasResource(targetUrl, configdata = {}) {
+async function fetchOdasResource(targetUrl, configdata = {}, options = {}) {
   if (isOdasProxyEnabled(configdata)) {
-    return fetchViaOdasProxy(targetUrl);
+    return fetchViaOdasProxy(targetUrl, options);
   }
 
   try {
-    const response = await fetch(targetUrl);
+    const response = await fetch(targetUrl, {
+      signal: options && options.signal ? options.signal : undefined,
+    });
     if (!response.ok) {
       throw new Error(`HTTP ${response.status}`);
     }
     return response.text();
   } catch (error) {
+    if (error && error.name === "AbortError") throw error;
     throw new Error(
       `Direkter Datenabruf fehlgeschlagen (${error.message}). Bitte prüfen Sie die Daten-URL und die CORS-Freigabe der Datenquelle.`,
     );
@@ -183,8 +252,8 @@ function getOdasApiUrl(configdata, name) {
   return String((treffer && treffer.url) || "").trim();
 }
 
-async function fetchOdasJson(targetUrl, configdata = {}) {
-  const rawContent = await fetchOdasResource(targetUrl, configdata);
+async function fetchOdasJson(targetUrl, configdata = {}, options = {}) {
+  const rawContent = await fetchOdasResource(targetUrl, configdata, options);
   try {
     return JSON.parse(rawContent);
   } catch (_error) {
@@ -343,23 +412,17 @@ function renderOdasFehler(container, error, kontext = {}) {
   container.innerHTML = `<div class="alert ${alertClass}" role="alert"><strong>${escapeHtml(titel)}</strong><p class="mb-1">${escapeHtml(info.hinweis)}</p>${urlZeile}<details class="small"><summary>Details</summary><code>${escapeHtml(info.detail || String(error))}</code></details></div>`;
 }
 
-function isLeerErgebnis(json) {
-  if (!json) return true;
-  if (Array.isArray(json) && json.length === 0) return true;
-  if (Array.isArray(json.records) && json.records.length === 0) return true;
-  if (Array.isArray(json.results) && json.results.length === 0) return true;
-  if (json.result && Array.isArray(json.result.records) && json.result.records.length === 0) return true;
-  return false;
-}
-
-
 /**
  * Lädt die Galerie-Daten aus der API (über Proxy) und startet die Darstellung.
  * @param {string} apiurl - URL zur API
  */
 async function fetchGalleryData(apiurl, configdata = {}, root) {
   try {
-    const data = await fetchOdasJson(apiurl, configdata);
+    const data = await fetchOdasJson(apiurl, configdata, {
+      signal: ivZustand(root) ? ivZustand(root).controller.signal : undefined,
+    });
+    // IV-B1: Nach einem Seitenwechsel weder Datenstand noch Inhalt schreiben.
+    if (ivVerworfen(root)) return;
     const datenfrische = extractDatenStandIv(data);
     updateIvFrische(datenfrische, root);
     // Annahme: Die API liefert ein Objekt in data.result mit folgenden Feldern:
@@ -371,9 +434,9 @@ async function fetchGalleryData(apiurl, configdata = {}, root) {
       notes: data.result.notes || "",
     };
 
-    // Filtere Ressourcen, die Bild-URLs enthalten
+    // IV-B2: Filtere Bildressourcen ueber Endung ODER format/mimetype.
     const imageData = (data.result.resources || [])
-      .filter((resource) => /\.(jpe?g|png|gif|webp)$/i.test(resource.url))
+      .filter(istBildRessource)
       .map((resource) => ({
         url: resource.url,
         title: resource.name || "Kein Titel",
@@ -381,14 +444,19 @@ async function fetchGalleryData(apiurl, configdata = {}, root) {
       }));
 
     if (imageData.length === 0) {
-      root.querySelector("#iv-app-container").innerHTML =
-        "<p>Keine Bilder gefunden. Bitte versuche es später erneut.</p>";
+      const leerContainer = root.querySelector("#iv-app-container");
+      if (leerContainer) {
+        leerContainer.innerHTML =
+          "<p>Keine Bilder gefunden. Bitte versuche es später erneut.</p>";
+      }
       return;
     }
 
     // Zeige die Startseite mit Galerieübersicht
     showStartPage(galleryInfo, imageData, root);
   } catch (err) {
+    if (err && err.name === "AbortError") return;
+    if (ivVerworfen(root)) return;
     console.error("Fehler beim Laden der Galerie-Daten:", err);
     renderOdasFehler(root.querySelector("#iv-app-container"), err, {
       url: apiurl,
@@ -405,29 +473,53 @@ async function fetchGalleryData(apiurl, configdata = {}, root) {
  * @param {Array} imageData - Array mit Bildobjekten (url, title, description)
  */
 function showStartPage(galleryInfo, imageData, root) {
+  // IV-B1: Nach einem Seitenwechsel gibt es den Untercontainer nicht mehr.
+  if (ivVerworfen(root)) return;
   const container = root.querySelector("#iv-app-container");
+  if (!container) return;
+
+  const VORSCHAU_ANZAHL = 6;
+  const vorschau = imageData.slice(0, VORSCHAU_ANZAHL);
+  // IV-B5: Stilles Kuerzen wird benannt.
+  const vorschauHinweis =
+    imageData.length > vorschau.length
+      ? `<p class="text-muted small">Vorschau: ${vorschau.length} von ${imageData.length} Bildern.</p>`
+      : "";
+
   container.innerHTML = `
     <div class="text-center">
       <h1>${escapeHtml(galleryInfo.title)}</h1>
       <p>${escapeHtml(galleryInfo.notes)}</p>
       <button id="iv-start-slideshow" class="btn btn-primary">Slideshow starten</button>
     </div>
+    ${vorschauHinweis}
     <div class="gallery-preview mt-4">
-      ${imageData
-        .slice(0, 6)
+      ${vorschau
         .map(
           (image) =>
-            `<img src="${escapeHtml(safeUrl(image.url))}" alt="${escapeHtml(image.title)}">`,
+            `<img src="${escapeHtml(safeUrl(image.url))}" alt="${escapeHtml(image.title)}" loading="lazy" decoding="async">`,
         )
         .join("")}
     </div>
   `;
 
-  root
-    .querySelector("#iv-start-slideshow")
-    .addEventListener("click", function () {
+  // IV-B3: Bildladefehler sichtbar machen statt nur das Browser-Icon zu zeigen.
+  container.querySelectorAll(".gallery-preview img").forEach(function (img) {
+    img.addEventListener("error", function () {
+      img.classList.add("iv-img-fehler");
+      const hinweis = document.createElement("span");
+      hinweis.className = "iv-img-fehler-hinweis small text-muted";
+      hinweis.textContent = "Bild nicht verfügbar";
+      img.replaceWith(hinweis);
+    });
+  });
+
+  const startBtn = root.querySelector("#iv-start-slideshow");
+  if (startBtn) {
+    startBtn.addEventListener("click", function () {
       startSlideshow(imageData, galleryInfo, root);
     });
+  }
 }
 
 /**
@@ -437,16 +529,23 @@ function showStartPage(galleryInfo, imageData, root) {
  * @param {Object} galleryInfo - Enthält title und notes der Galerie (zur Rückkehr zur Startseite)
  */
 function startSlideshow(imageData, galleryInfo, root) {
+  // IV-B1: Nach einem Seitenwechsel nicht mehr in den fremden Container schreiben.
+  if (ivVerworfen(root)) return;
   const container = root.querySelector("#iv-app-container");
-  // Neue HTML-Struktur für die Slideshow mit eigener Anordnung der Buttons und Info-Bereich
+  if (!container) return;
+  const zustand = ivZustand(root);
+
+  // IV-B4: Der Bildbereich ist eine benannte Region, der Infobereich kuendigt
+  // Wechsel an (aria-live) — der Titel ist damit auch fuer Screenreader da.
   container.innerHTML = `
-    <div id="slideshow" class="slideshow-container text-center">
+    <div id="slideshow" class="slideshow-container text-center" role="region" aria-label="Bildergalerie">
       <div class="image-container mb-3">
-        <img id="iv-slide-image" src="" alt="Bild" class="img-fluid" style="max-height: 70vh;">
+        <img id="iv-slide-image" src="" alt="" class="img-fluid" style="max-height: 70vh;">
       </div>
-      <div class="info-container mb-3">
+      <div class="info-container mb-3" aria-live="polite">
         <h3 id="iv-slide-title" class="slide-title"></h3>
         <p id="iv-slide-description" class="slide-description"></p>
+        <p id="iv-slide-position" class="text-muted small mb-0"></p>
       </div>
       <div class="button-container d-flex justify-content-around">
         <button id="iv-prev-slide" class="btn btn-secondary">Vorherige</button>
@@ -457,33 +556,96 @@ function startSlideshow(imageData, galleryInfo, root) {
   `;
 
   let currentIndex = 0;
+  const bildEl = root.querySelector("#iv-slide-image");
+  const titelEl = root.querySelector("#iv-slide-title");
+  const beschreibungEl = root.querySelector("#iv-slide-description");
+  const positionEl = root.querySelector("#iv-slide-position");
+  const fehlerEl = document.createElement("p");
+  fehlerEl.className = "text-danger small d-none";
+  fehlerEl.textContent = "Das Bild konnte nicht geladen werden.";
+  beschreibungEl.parentNode.appendChild(fehlerEl);
 
-  // Funktion zum Aktualisieren der Anzeige
+  // IV-B3: Ladefehler des Bildes sichtbar machen.
+  if (bildEl) {
+    bildEl.addEventListener("error", function () {
+      if (bildEl.getAttribute("src")) fehlerEl.classList.remove("d-none");
+    });
+  }
+
+  // IV-B4: Titel als Alt-Text, damit das Bild selbst beschriftet ist.
   function updateSlide() {
     const currentImage = imageData[currentIndex];
-    root.querySelector("#iv-slide-image").src = safeUrl(currentImage.url);
-    root.querySelector("#iv-slide-title").textContent = currentImage.title;
-    root.querySelector("#iv-slide-description").textContent =
-      currentImage.description;
+    const quelle = safeUrl(currentImage.url);
+    if (bildEl) {
+      // IV-B3: ein leeres src wuerde die aktuelle Seite erneut anfordern.
+      if (quelle) {
+        bildEl.src = quelle;
+        bildEl.alt = currentImage.title || "Bild";
+        fehlerEl.classList.add("d-none");
+      } else {
+        bildEl.removeAttribute("src");
+        bildEl.alt = "";
+        fehlerEl.classList.remove("d-none");
+      }
+    }
+    if (titelEl) titelEl.textContent = currentImage.title;
+    if (beschreibungEl) beschreibungEl.textContent = currentImage.description;
+    if (positionEl) {
+      positionEl.textContent =
+        "Bild " + (currentIndex + 1) + " von " + imageData.length;
+    }
+  }
+
+  function weiter() {
+    currentIndex = (currentIndex + 1) % imageData.length;
+    updateSlide();
+  }
+
+  function zurueck() {
+    currentIndex = (currentIndex - 1 + imageData.length) % imageData.length;
+    updateSlide();
   }
 
   // Eventlistener für Navigationsbuttons
-  root.querySelector("#iv-prev-slide").addEventListener("click", function () {
-    currentIndex = (currentIndex - 1 + imageData.length) % imageData.length;
-    updateSlide();
-  });
-
-  root.querySelector("#iv-next-slide").addEventListener("click", function () {
-    currentIndex = (currentIndex + 1) % imageData.length;
-    updateSlide();
-  });
+  root.querySelector("#iv-prev-slide").addEventListener("click", zurueck);
+  root.querySelector("#iv-next-slide").addEventListener("click", weiter);
 
   // Eventlistener für den Zurück-Button
   root
     .querySelector("#iv-back-to-home")
     .addEventListener("click", function () {
+      entferneTastatur();
       showStartPage(galleryInfo, imageData, root);
     });
+
+  // IV-B4: Tastatursteuerung waehrend der Slideshow. Die Referenz haengt am
+  // Instanzzustand, damit der Teardown sie wieder entfernt.
+  function entferneTastatur() {
+    if (zustand && zustand.keydownHandler) {
+      document.removeEventListener("keydown", zustand.keydownHandler);
+      zustand.keydownHandler = null;
+    }
+  }
+  function tastatur(e) {
+    if (ivVerworfen(root)) {
+      entferneTastatur();
+      return;
+    }
+    if (!root.querySelector("#iv-slide-image")) {
+      entferneTastatur();
+      return;
+    }
+    if (e.key === "ArrowRight") {
+      weiter();
+    } else if (e.key === "ArrowLeft") {
+      zurueck();
+    }
+  }
+  if (zustand) {
+    entferneTastatur();
+    zustand.keydownHandler = tastatur;
+    document.addEventListener("keydown", tastatur);
+  }
 
   // Initiale Anzeige
   updateSlide();

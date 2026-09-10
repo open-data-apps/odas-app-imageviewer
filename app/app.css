@@ -175,3 +175,16 @@
 .iv-weitere-infos-content a {
   overflow-wrap: anywhere;
 }
+
+/* IV-B3: Platzhalter für nicht ladbare Bilder in der Vorschau */
+.iv-img-fehler-hinweis {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 120px;
+  min-height: 90px;
+  padding: 0.5rem 0.75rem;
+  border: 1px dashed var(--bs-border-color);
+  border-radius: 0.5rem;
+  background: var(--bs-tertiary-bg);
+}

@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.23.3 - 2026-09-10
+- **FIX (IV-B1):** Kein Lifecycle-Schutz: nach einem Seitenwechsel liefen späte Antworten in einen `TypeError`, weil der eigene Untercontainer nicht mehr existiert (`#iv-app-container` ohne Null-Prüfung). Jetzt Instanz-Registry, `onPageLeave`, `AbortController` und `disposed`-Prüfungen vor jedem Schreiber.
+- **FIX (IV-B2):** Bilder wurden nur über die Datei-Endung erkannt — CKAN-Ressourcen mit Query-String (`bild.jpg?download=1`) oder ohne Endung (`format: "JPEG"`) fielen lautlos heraus. Jetzt zählt zusätzlich `format`/`mimetype`; der akzeptierte Typumfang bleibt unverändert.
+- **FIX (IV-B3):** `<img>` ohne Fehler- und Ladezustand: kaputte Bilder wurden als Browser-Platzhalter gezeigt, und ein leeres `src` konnte die aktuelle Seite erneut anfordern. Jetzt `onerror`-Behandlung (Vorschau + Slideshow), `loading="lazy"`, `decoding="async"` und keine leeren `src`-Werte.
+- **FIX (IV-B4):** Barrierefreiheit: `alt` trägt jetzt den Bildtitel (statt „Bild"), die Slideshow ist per Pfeiltasten bedienbar, der Infobereich nutzt `aria-live="polite"` und nennt die Position („Bild 3 von 24").
+- **FIX (IV-B5):** Die Vorschau kürzte stillschweigend auf sechs Bilder — jetzt mit Hinweis „Vorschau: 6 von 24 Bildern."
+- **TECH (IV-B6):** `isLeerErgebnis` entfernt; `fetchOdasResource`/`fetchOdasJson` reichen `signal` durch und werfen `AbortError` unverpackt.
+
 ## 1.23.2 - 2026-09-08
 - **FIX:** Variante-A-Verdrahtung (F-92): Typprüfung (ckan-ps) vor dem ersten Fetch; Quellen- und Ladefehler über `renderOdasFehler` (1.23.1 -> 1.23.2).
 

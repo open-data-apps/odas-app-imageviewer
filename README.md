@@ -9,8 +9,10 @@ Die App ist eine "ODAP App V1".
 ## Funktionen
 
 - Anzeige einer Bildersammlung als Galerie
-- Slideshow mit Navigation (vor/zurück) und Bildinformationen
-- Vorschaugitter auf der Startseite
+- Slideshow mit Navigation (vor/zurück) und Bildinformationen; Bedienung auch per Pfeiltasten (←/→)
+- Bilderkennung über Dateiendung **oder** `format`/`mimetype` der CKAN-Ressource
+- Vorschaugitter auf der Startseite (mit Hinweis „x von y Bildern")
+- Nicht ladbare Bilder werden als solche gekennzeichnet statt als Browser-Platzhalter
 - Datenfrische-Indikator (CKAN metadata_modified)
 
 ## Für wen ist diese App?
