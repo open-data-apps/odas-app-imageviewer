@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.23.4 - 2026-10-02
+- ENH: Verwendete ODAS-Dienste in `odas-services` deklariert.
+
 ## 1.23.3 - 2026-09-10
 - **FIX (IV-B1):** Kein Lifecycle-Schutz: nach einem Seitenwechsel liefen späte Antworten in einen `TypeError`, weil der eigene Untercontainer nicht mehr existiert (`#iv-app-container` ohne Null-Prüfung). Jetzt Instanz-Registry, `onPageLeave`, `AbortController` und `disposed`-Prüfungen vor jedem Schreiber.
 - **FIX (IV-B2):** Bilder wurden nur über die Datei-Endung erkannt — CKAN-Ressourcen mit Query-String (`bild.jpg?download=1`) oder ohne Endung (`format: "JPEG"`) fielen lautlos heraus. Jetzt zählt zusätzlich `format`/`mimetype`; der akzeptierte Typumfang bleibt unverändert.
