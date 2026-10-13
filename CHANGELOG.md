@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.23.6 - 2026-10-13
+- FIX: Standard-Fehleranzeige gibt präzisere Tipps: ein „Failed to fetch“ ohne Proxy-Kontext erhält einen Netzwerk-Hinweis statt `proxyAktiv`; der 404-Hinweis gilt nur noch für echte HTTP-404-Antworten und nennt den lokal fehlenden Proxy/Relay statt pauschal „Datensatz auf dem Portal nicht gefunden“.
+
 ## 1.23.5 - 2026-10-13
 - FIX: F-157: Slideshow-Buttons brechen auf schmalen Bildschirmen um; kein seitlicher Überlauf und kein abgeschnittener „Nächste“-Button mehr.
 
