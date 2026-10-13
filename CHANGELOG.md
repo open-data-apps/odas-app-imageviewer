@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.23.5 - 2026-10-13
+- FIX: F-157: Slideshow-Buttons brechen auf schmalen Bildschirmen um; kein seitlicher Überlauf und kein abgeschnittener „Nächste“-Button mehr.
+
 ## 1.23.4 - 2026-10-02
 - ENH: Verwendete ODAS-Dienste in `odas-services` deklariert.
 
